@@ -1,0 +1,34 @@
+{
+  "articulos": [
+    {
+      "id": "kb_internet_001",
+      "palabras_clave": ["internet", "wifi", "red", "conexion"],
+      "pasos": [
+        "Verifica si otro dispositivo puede conectarse a la misma red.",
+        "Confirma que el modo avion este desactivado y que WiFi este activo.",
+        "Reinicia el adaptador de red desde la configuracion del sistema.",
+        "Si el problema continua, informa el resultado al equipo de soporte."
+      ]
+    },
+    {
+      "id": "kb_rendimiento_001",
+      "palabras_clave": ["lento", "lenta", "rendimiento", "bloqueado"],
+      "pasos": [
+        "Cierra aplicaciones que no estes utilizando.",
+        "Reinicia el equipo si lleva mucho tiempo encendido.",
+        "Revisa que haya espacio libre disponible en el disco.",
+        "Si persiste, informa al soporte sin instalar programas ni cambiar configuraciones criticas."
+      ]
+    },
+    {
+      "id": "kb_impresora_001",
+      "palabras_clave": ["impresora", "imprime", "impresion"],
+      "pasos": [
+        "Verifica que la impresora este encendida y conectada.",
+        "Comprueba que tenga papel y no muestre un mensaje fisico de error.",
+        "Cancela solo los trabajos propios que permanezcan en cola.",
+        "Si el error continua, informa el nombre de la impresora al soporte."
+      ]
+    }
+  ]
+}

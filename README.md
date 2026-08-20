@@ -1,74 +1,56 @@
-# OrientaU - Agente Academico
+# SoporteTI-Agent
 
-Servicio FastAPI para orientar consultas academicas. La primera rebanada vertical valida JSON, coordina una respuesta mock y exige aprobacion antes de comunicar una decision. No necesita una API key ni un modelo real.
+Base tecnica v0.1 de un agente de soporte TI. Recibe una incidencia, analiza el contexto, consulta una base de conocimiento local, devuelve pasos seguros y escala los casos sin guia para aprobacion humana.
 
 ## Estructura
 
 ```
-app/                 codigo de la aplicacion
-data/                catalogo y ejemplos de contratos JSON
+app/                 API, orquestador y herramientas
+data/                conocimiento y contratos JSON
 tests/               pruebas automatizadas
-docs/                contrato y decisiones de arquitectura
+docs/                contrato, arquitectura, mapa y evidencia
 .env.example         configuracion segura de ejemplo
 .gitignore           archivos que no se versionan
-README.md            como iniciar y verificar
 ```
 
-## Contrato mock
+## Arquitectura
 
-`POST /agent/ask` recibe `question`, `student_id` y un `context` opcional. Responde JSON con `answer`, `sources` y `needs_approval`. Los ejemplos ejecutables estan en [data/agent_request.json](data/agent_request.json) y [data/agent_response.json](data/agent_response.json).
+El agente sigue el ciclo: **objetivo -> contexto -> decision -> herramientas -> observacion -> limites**. Consulta el [mapa de arquitectura](docs/arquitectura.md) y el [contrato HTTP](docs/contrato-api.md).
 
-## Que entra, sale y queda fuera
-
-Entra una pregunta y el contexto permitido del estudiante. Sale una respuesta mock trazable y marcada para aprobacion. El sistema no usa secretos, no llama modelos externos, no inscribe materias, no modifica historiales y no envia solicitudes.
-
-## Entorno aislado y repetible
+## Entorno aislado y ejecucion
 
 ```powershell
-# 1. Crear el entorno aislado
 python -m venv .venv
-
-# 2. Activarlo
 .\.venv\Scripts\Activate.ps1
-
-# 3. Instalar las versiones congeladas
 pip install -r requirements.txt
-
-# 4. Verificar las dependencias instaladas
-pip freeze
-
-# 5. Ejecutar el servidor
+python -m pytest tests/ -v
 uvicorn app.main:app --reload
 ```
 
-El servicio queda en `http://127.0.0.1:8000`; la documentacion interactiva esta en `http://127.0.0.1:8000/docs`.
+La API queda en `http://127.0.0.1:8000` y la documentacion interactiva en `http://127.0.0.1:8000/docs`.
 
-## Peticion de ejemplo
+## Ejemplo
 
 ```http
 POST /agent/ask
 Content-Type: application/json
 
 {
-  "question": "Que materias puedo tomar?",
-  "student_id": "UAN-1042",
+  "question": "No tengo internet en mi portatil",
+  "user_id": "USR-1042",
   "context": {
-    "program": "Ingenieria de Sistemas",
-    "semester": 5
+    "device": "portatil",
+    "operating_system": "Windows 11"
   }
 }
 ```
 
-Consulta el contrato completo en [docs/contrato-api.md](docs/contrato-api.md), la arquitectura en [docs/arquitectura.md](docs/arquitectura.md), la evidencia de demo en [docs/evidencia-v0.1.md](docs/evidencia-v0.1.md) y el [reporte con la matriz solicitada](docs/reporte-matriz-v0.1.md).
+Los contratos de referencia estan en [data/agent_request.json](data/agent_request.json) y [data/agent_response.json](data/agent_response.json). La base de conocimiento local esta en [data/conocimiento_soporte.json](data/conocimiento_soporte.json).
 
-## Verificacion y Git
+## Limites
 
-```powershell
-pytest tests/ -v
-git status
-git add .
-git commit -m "feat: consultar prerrequisitos academicos"
-git push
-```
+El agente no ejecuta comandos administrativos, no instala software, no cambia contrasenas, no modifica configuraciones criticas, no elimina archivos y no envia tickets. Cuando no encuentra una guia, prepara un borrador y devuelve `needs_approval: true`.
 
-Cada commit debe representar una decision pequena, explicable y verificable.
+## Evidencia
+
+La [matriz de la base tecnica](docs/reporte-matriz-v0.1.md) resume componentes, responsabilidades y pruebas. Usa `git status`, `git log --oneline` y `git push` para registrar decisiones pequenas y verificables.

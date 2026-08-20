@@ -1,39 +1,35 @@
-"""Orquestador del caso de uso de consulta academica."""
+"""Orquestador determinista del agente de soporte TI."""
 
 from __future__ import annotations
 
 from typing import Any
 
-from app.tools import consultar_prerrequisitos, crear_borrador_solicitud
+from app.tools import buscar_conocimiento, crear_borrador_ticket
 
 
-class AgenteAcademico:
-    """Consulta requisitos y prepara un borrador, sin modificar matriculas."""
+class AgenteSoporteTI:
+    """Analiza un problema, consulta conocimiento local y aplica limites seguros."""
 
-    def consultar(self, estudiante: str, materias_aprobadas: list[str]) -> dict[str, Any]:
-        resultado = consultar_prerrequisitos(materias_aprobadas)
-        disponibles = resultado["materias_disponibles"]
+    def responder(self, question: str, user_id: str, context: dict[str, Any] | None = None) -> dict[str, Any]:
+        articulo = buscar_conocimiento(question)
+        dispositivo = (context or {}).get("device", "el equipo")
+
+        if articulo is None:
+            borrador = crear_borrador_ticket(question, user_id)
+            return {
+                "answer": (
+                    f"No encontre una guia segura para {dispositivo}. Se preparo un borrador para "
+                    "revision humana; no se enviara ni se ejecutara ningun cambio automaticamente."
+                ),
+                "sources": ["protocolo_escalamiento"],
+                "needs_approval": True,
+                "next_action": borrador["estado"],
+            }
+
+        pasos = " ".join(f"{indice}. {paso}" for indice, paso in enumerate(articulo["pasos"], start=1))
         return {
-            "estudiante": estudiante,
-            "materias_aprobadas": sorted({codigo.upper() for codigo in materias_aprobadas}),
-            **resultado,
-            "solicitud": crear_borrador_solicitud(estudiante, disponibles) if disponibles else None,
-            "limites": [
-                "No inscribe materias.",
-                "No modifica el historial academico.",
-                "No envia la solicitud al coordinador.",
-            ],
+            "answer": f"Para {dispositivo}: {pasos}",
+            "sources": [articulo["id"]],
+            "needs_approval": False,
+            "next_action": "seguir_pasos_seguros",
         }
-
-
-def responder_pregunta_mock(question: str, student_id: str, context: dict[str, Any] | None = None) -> dict[str, Any]:
-    """Coordina una respuesta de prueba sin consultar un modelo ni secretos."""
-    programa = (context or {}).get("program", "tu programa academico")
-    return {
-        "answer": (
-            f"{student_id}, puedes revisar las materias y sus prerrequisitos en el plan de "
-            f"estudios de {programa}. Esta respuesta es una simulacion para validar el contrato."
-        ),
-        "sources": ["plan_2026"],
-        "needs_approval": True,
-    }

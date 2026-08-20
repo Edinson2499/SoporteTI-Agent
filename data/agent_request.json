@@ -1,8 +1,8 @@
 {
-  "question": "Que materias puedo tomar?",
-  "student_id": "UAN-1042",
+  "question": "No tengo internet en mi portatil",
+  "user_id": "USR-1042",
   "context": {
-    "program": "Ingenieria de Sistemas",
-    "semester": 5
+    "device": "portatil",
+    "operating_system": "Windows 11"
   }
 }
