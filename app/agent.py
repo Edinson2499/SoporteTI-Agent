@@ -24,3 +24,16 @@ class AgenteAcademico:
                 "No envia la solicitud al coordinador.",
             ],
         }
+
+
+def responder_pregunta_mock(question: str, student_id: str, context: dict[str, Any] | None = None) -> dict[str, Any]:
+    """Coordina una respuesta de prueba sin consultar un modelo ni secretos."""
+    programa = (context or {}).get("program", "tu programa academico")
+    return {
+        "answer": (
+            f"{student_id}, puedes revisar las materias y sus prerrequisitos en el plan de "
+            f"estudios de {programa}. Esta respuesta es una simulacion para validar el contrato."
+        ),
+        "sources": ["plan_2026"],
+        "needs_approval": True,
+    }

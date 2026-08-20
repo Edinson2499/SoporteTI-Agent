@@ -1,5 +1,8 @@
 """Pruebas del flujo validar -> consultar -> devolver JSON."""
 
+import json
+from pathlib import Path
+
 from fastapi.testclient import TestClient
 
 from app.agent import AgenteAcademico
@@ -7,6 +10,16 @@ from app.main import app
 from app.tools import consultar_prerrequisitos
 
 client = TestClient(app)
+DATA_DIR = Path(__file__).resolve().parent.parent / "data"
+
+
+def test_ejemplos_json_son_validos_y_contienen_el_contrato():
+    request = json.loads((DATA_DIR / "agent_request.json").read_text(encoding="utf-8"))
+    response = json.loads((DATA_DIR / "agent_response.json").read_text(encoding="utf-8"))
+    assert {"question", "student_id", "context"} <= request.keys()
+    assert {"answer", "sources", "needs_approval"} <= response.keys()
+    assert isinstance(response["sources"], list)
+    assert isinstance(response["needs_approval"], bool)
 
 
 def test_consulta_identifica_materias_disponibles_y_bloqueadas():
@@ -44,4 +57,26 @@ def test_consulta_api_rechaza_codigo_invalido():
         "/consulta",
         json={"estudiante": "Ana Perez", "materias_aprobadas": ["PRO-101"]},
     )
-    assert respuesta.status_code == 422
+    assert respuesta.status_code == 400
+
+
+def test_agent_ask_retorna_respuesta_mock_con_aprobacion():
+    respuesta = client.post(
+        "/agent/ask",
+        json={
+            "question": "Que materias puedo tomar?",
+            "student_id": "UAN-1042",
+            "context": {"program": "Ingenieria de Sistemas", "semester": 5},
+        },
+    )
+    assert respuesta.status_code == 200
+    datos = respuesta.json()
+    assert "Ingenieria de Sistemas" in datos["answer"]
+    assert datos["sources"] == ["plan_2026"]
+    assert datos["needs_approval"] is True
+
+
+def test_agent_ask_rechaza_question_faltante():
+    respuesta = client.post("/agent/ask", json={"student_id": "UAN-1042"})
+    assert respuesta.status_code == 400
+    assert respuesta.json()["detail"] == "Solicitud invalida."
