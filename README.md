@@ -59,7 +59,7 @@ Content-Type: application/json
 }
 ```
 
-Consulta el contrato completo en [docs/contrato-api.md](docs/contrato-api.md), la arquitectura en [docs/arquitectura.md](docs/arquitectura.md) y la matriz con la evidencia de demo en [docs/evidencia-v0.1.md](docs/evidencia-v0.1.md).
+Consulta el contrato completo en [docs/contrato-api.md](docs/contrato-api.md), la arquitectura en [docs/arquitectura.md](docs/arquitectura.md), la evidencia de demo en [docs/evidencia-v0.1.md](docs/evidencia-v0.1.md) y el [reporte con la matriz solicitada](docs/reporte-matriz-v0.1.md).
 
 ## Verificacion y Git
 
