@@ -1,106 +1,56 @@
-# SoporteTI-Agent
+# Agente Academico
 
-Agente de IA para soporte tecnico de computadores. El usuario describe su problema y el agente analiza el contexto, consulta una base de conocimiento local, hace preguntas de diagnostico y recomienda pasos para solucionarlo. Si no puede resolver el problema, crea un ticket de soporte para revision humana.
+Servicio FastAPI que consulta prerrequisitos desde un catalogo JSON y prepara un borrador de solicitud para el coordinador. El resultado es determinista y no necesita una clave de IA.
 
-## Estructura del proyecto
+## Estructura
 
 ```
-soporteti-agent/
-├── app/
-│   ├── main.py       # API HTTP (FastAPI)
-│   ├── agent.py      # Ciclo de decision del agente
-│   └── tools.py      # Herramientas: buscar_conocimiento, consultar_diagnostico, crear_ticket
-├── knowledge/
-│   ├── internet.json
-│   ├── windows.json
-│   ├── impresoras.json
-│   ├── rendimiento.json
-│   └── cuentas.json
-├── tests/
-│   └── test_agent.py
-├── architecture/
-│   └── architecture.md
-├── .env.example
-├── .gitignore
-├── requirements.txt
-└── README.md
+app/                 codigo de la aplicacion
+data/                catalogo JSON de materias
+tests/               pruebas automatizadas
+docs/                contrato y decisiones de arquitectura
+.env.example         configuracion segura de ejemplo
+.gitignore           archivos que no se versionan
+README.md            como iniciar y verificar
 ```
 
-## Instalacion rapida
+## Que entra, sale y queda fuera
 
-```bash
-# 1. Clonar el repositorio
-git clone https://github.com/Edinson2499/SoporteTI-Agent.git
-cd SoporteTI-Agent
+Entra el nombre del estudiante y los codigos de materias aprobadas. Sale JSON con materias disponibles, materias bloqueadas y un borrador no enviado. El sistema no inscribe materias, no modifica historiales y no envia solicitudes.
 
-# 2. Crear entorno virtual e instalar dependencias
+## Ejecucion
+
+```powershell
 python -m venv .venv
-source .venv/bin/activate   # Windows: .venv\Scripts\activate
+.\.venv\Scripts\Activate.ps1
 pip install -r requirements.txt
-
-# 3. Configurar la clave de OpenAI
-cp .env.example .env
-# Editar .env y completar OPENAI_API_KEY
-
-# 4. Iniciar el servidor
 uvicorn app.main:app --reload
 ```
 
-El servidor queda disponible en `http://localhost:8000`. La documentacion interactiva esta en `http://localhost:8000/docs`.
+El servicio queda en `http://127.0.0.1:8000`; la documentacion interactiva esta en `http://127.0.0.1:8000/docs`.
 
-## Uso de la API
+## Consulta de ejemplo
 
-### Iniciar una sesion
 ```http
-POST /iniciar
+POST /consulta
 Content-Type: application/json
 
 {
-  "session_id": "sesion-001",
-  "problema": "Mi computador esta muy lento",
-  "usuario": "juan"
+  "estudiante": "Ana Perez",
+  "materias_aprobadas": ["MAT101", "PRO101"]
 }
 ```
 
-### Continuar la conversacion
-```http
-POST /responder
-Content-Type: application/json
+Consulta el contrato completo en [docs/contrato-api.md](docs/contrato-api.md) y la arquitectura en [docs/arquitectura.md](docs/arquitectura.md).
 
-{
-  "session_id": "sesion-001",
-  "mensaje": "Solo tengo 3 GB libres en el disco"
-}
-```
+## Verificacion y Git
 
-### Escalar el caso (crear ticket)
-```http
-POST /escalar
-Content-Type: application/json
-
-{
-  "session_id": "sesion-001",
-  "descripcion_adicional": "El problema persiste despues de reiniciar"
-}
-```
-
-### Consultar un ticket
-```http
-GET /ticket/{ticket_id}
-```
-
-## Ejecutar pruebas
-
-```bash
+```powershell
 pytest tests/ -v
+git status
+git add .
+git commit -m "feat: consultar prerrequisitos academicos"
+git push
 ```
 
-## Arquitectura
-
-Ver [architecture/architecture.md](architecture/architecture.md) para el diagrama completo, tabla de componentes, limites del agente y plan de evolucion.
-
-## Limites del agente
-
-El agente **SI puede**: consultar conocimiento, hacer preguntas, analizar problemas, recomendar soluciones, crear borradores de tickets.
-
-El agente **NO puede**: eliminar archivos, ejecutar comandos administrativos, cambiar contraseñas, instalar software, cerrar tickets sin aprobacion humana.
+Cada commit debe representar una decision pequena, explicable y verificable.
