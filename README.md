@@ -29,6 +29,39 @@ uvicorn app.main:app --reload
 
 La API queda en `http://127.0.0.1:8000` y la documentacion interactiva en `http://127.0.0.1:8000/docs`.
 
+## Guia rapida: clonar y ejecutar en cualquier equipo (PowerShell)
+
+Requiere Python 3.11+ y Git instalados y disponibles en el `PATH`.
+
+```powershell
+# 1. Clonar el repositorio
+git clone https://github.com/<usuario>/SoporteTI-Agent.git
+cd SoporteTI-Agent
+
+# 2. Configurar entorno (venv + dependencias + .env + pruebas)
+.\scripts\setup.ps1
+
+# 3. Iniciar la API
+.\scripts\start.ps1
+```
+
+- `setup.ps1` crea `.venv`, instala `requirements.txt`, genera `.env` desde `.env.example` (si no existe) y corre `pytest`. Usa `-SkipTests` para omitir las pruebas.
+- `start.ps1` activa el entorno virtual y levanta `uvicorn` en `http://127.0.0.1:8000` (usa `-Port` para cambiar el puerto).
+- Si PowerShell bloquea la ejecucion de scripts, corre una vez: `Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass`.
+
+Pasos manuales equivalentes (sin los scripts):
+
+```powershell
+git clone https://github.com/<usuario>/SoporteTI-Agent.git
+cd SoporteTI-Agent
+python -m venv .venv
+.\.venv\Scripts\Activate.ps1
+pip install -r requirements.txt
+Copy-Item .env.example .env
+python -m pytest tests/ -v
+uvicorn app.main:app --reload
+```
+
 ## Ejemplo
 
 ```http
