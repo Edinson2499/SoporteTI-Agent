@@ -15,7 +15,7 @@ docs/                contrato, arquitectura, mapa y evidencia
 
 ## Arquitectura
 
-El agente sigue el ciclo: **objetivo -> contexto -> decision -> herramientas -> observacion -> limites**. Consulta el [mapa de arquitectura](docs/arquitectura.md) y el [contrato HTTP](docs/contrato-api.md).
+El agente sigue el ciclo: **objetivo -> contexto -> decision -> herramientas -> observacion -> limites**. Consulta el [mapa de arquitectura](docs/arquitectura.md) y el [contrato HTTP](docs/api-contract.md).
 
 ## Entorno aislado y ejecucion
 
