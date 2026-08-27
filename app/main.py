@@ -12,6 +12,9 @@ from pydantic import BaseModel, Field
 
 from app.agent import AgenteSoporteTI
 
+
+agent = AgenteSoporteTI()
+
 app = FastAPI(
     title="SoporteTI-Agent API",
     description="Agente de soporte TI con conocimiento local y limites seguros.",
@@ -50,4 +53,4 @@ def health() -> dict[str, str]:
 @app.post("/agent/ask", response_model=AgentAskResponse)
 def ask_agent(req: AgentAskRequest) -> AgentAskResponse:
     """Valida el problema, consulta conocimiento local y devuelve una respuesta segura."""
-    return AgentAskResponse(**AgenteSoporteTI().responder(req.question, req.user_id, req.context))
+    return AgentAskResponse(**agent.responder(req.question, req.user_id, req.context))

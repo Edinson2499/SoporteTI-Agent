@@ -1,3 +1,5 @@
+.aws-sam/
+
 # Dependencias
 __pycache__/
 *.py[cod]

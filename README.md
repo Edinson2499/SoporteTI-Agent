@@ -29,6 +29,29 @@ uvicorn app.main:app --reload
 
 La API queda en `http://127.0.0.1:8000` y la documentacion interactiva en `http://127.0.0.1:8000/docs`.
 
+## Despliegue en AWS Lambda
+
+El proyecto incluye [template.yaml](template.yaml) para AWS SAM. La funcion usa el handler `app.lambda_handler.handler`, incluye la base de conocimiento local y expone una API HTTP con `GET /health` y `POST /agent/ask`.
+
+Requiere AWS CLI, AWS SAM CLI, credenciales configuradas y Python 3.12 para coincidir con el runtime:
+
+```powershell
+aws configure
+.\scripts\deploy.ps1 -StackName soporte-ti-agent-dev -Region us-east-1
+```
+
+El script ejecuta `sam build`, despliega el stack y muestra la URL de la API. Para probarla:
+
+```powershell
+$apiUrl = "https://<api-id>.execute-api.us-east-1.amazonaws.com"
+Invoke-RestMethod "$apiUrl/health"
+Invoke-RestMethod "$apiUrl/agent/ask" -Method Post -ContentType "application/json" -Body (@{
+  question = "No tengo internet en mi portatil"
+  user_id = "USR-1042"
+  context = @{ device = "portatil" }
+} | ConvertTo-Json)
+```
+
 ## Guia rapida: clonar y ejecutar en cualquier equipo (PowerShell)
 
 Requiere Python 3.11+ y Git instalados y disponibles en el `PATH`.

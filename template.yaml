@@ -1,0 +1,38 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: SoporteTI-Agent desplegado como AWS Lambda.
+
+Globals:
+  Function:
+    Timeout: 10
+    MemorySize: 256
+    Runtime: python3.12
+
+Resources:
+  SoporteTIAgentFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      FunctionName: !Sub soporte-ti-agent-${AWS::StackName}
+      CodeUri: .
+      Handler: app.lambda_handler.handler
+      Architectures:
+        - x86_64
+      Events:
+        Health:
+          Type: HttpApi
+          Properties:
+            Path: /health
+            Method: GET
+        Ask:
+          Type: HttpApi
+          Properties:
+            Path: /agent/ask
+            Method: POST
+
+Outputs:
+  ApiUrl:
+    Description: URL publica de la API HTTP.
+    Value: !Sub https://${ServerlessHttpApi}.execute-api.${AWS::Region}.amazonaws.com
+  FunctionArn:
+    Description: ARN de la funcion Lambda.
+    Value: !GetAtt SoporteTIAgentFunction.Arn
