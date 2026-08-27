@@ -52,6 +52,52 @@ Invoke-RestMethod "$apiUrl/agent/ask" -Method Post -ContentType "application/jso
 } | ConvertTo-Json)
 ```
 
+## Despliegue en AWS Lambda (agente soporte IT)
+
+La funcion `agentesoporit-lambda-v01` (region `us-east-2`) corre el handler `lambda_function.lambda_handler`
+en `python3.13`. El codigo esta versionado en [lambda/agentesoporit-lambda-v01](lambda/agentesoporit-lambda-v01),
+valida `request_id`, `user_id`, `question`, `channel` y responde `status`, `answer`, `source`, `next_action`.
+
+## Despliegue en EC2 (Amazon Linux 2023)
+
+El proyecto tambien corre como servicio persistente (`systemd`) en una instancia EC2, sirviendo el mismo FastAPI
+de `app/main.py` con `uvicorn` en el puerto `8000`.
+
+```bash
+sudo dnf install -y python3.11 python3.11-pip git
+git clone https://github.com/Edinson2499/SoporteTI-Agent.git
+cd SoporteTI-Agent
+python3.11 -m venv .venv
+source .venv/bin/activate
+pip install --upgrade pip
+pip install -r requirements.txt uvicorn
+```
+
+Servicio `systemd` (`/etc/systemd/system/soporteti-agent.service`) para que quede activo tras reinicios o cierre de sesion:
+
+```ini
+[Unit]
+Description=SoporteTI-Agent FastAPI
+After=network.target
+
+[Service]
+User=ec2-user
+WorkingDirectory=/home/ec2-user/SoporteTI-Agent
+ExecStart=/home/ec2-user/SoporteTI-Agent/.venv/bin/uvicorn app.main:app --host 0.0.0.0 --port 8000
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+
+```bash
+sudo systemctl daemon-reload
+sudo systemctl enable --now soporteti-agent
+```
+
+Requiere una regla de entrada en el Security Group (Custom TCP, puerto `8000`, origen `0.0.0.0/0`). La IP publica
+de la instancia cambia si se reinicia sin una Elastic IP asociada.
+
 ## Guia rapida: clonar y ejecutar en cualquier equipo (PowerShell)
 
 Requiere Python 3.11+ y Git instalados y disponibles en el `PATH`.
