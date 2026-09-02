@@ -1,0 +1,109 @@
+{
+  "articulos": [
+    {
+      "id": "kb_internet_001",
+      "categoria": "Internet",
+      "palabras_clave": ["internet", "wifi", "red", "conexion"],
+      "pasos": [
+        "Verifica que el WiFi este activo y que el modo avion este desactivado.",
+        "Reinicia el adaptador de red desde la configuracion del sistema.",
+        "Prueba si otro dispositivo puede conectarse a la misma red.",
+        "Si el problema continua, reinicia el router y reporta el resultado al soporte."
+      ]
+    },
+    {
+      "id": "kb_rendimiento_001",
+      "categoria": "Rendimiento",
+      "palabras_clave": ["lento", "lenta", "rendimiento", "congelado", "colgado"],
+      "pasos": [
+        "Cierra aplicaciones que no estes utilizando.",
+        "Revisa que haya espacio libre disponible en el disco.",
+        "Reinicia el equipo si lleva mucho tiempo encendido.",
+        "Si persiste, informa modelo y sistema operativo al soporte sin instalar programas."
+      ]
+    },
+    {
+      "id": "kb_windows_001",
+      "categoria": "Windows",
+      "palabras_clave": ["windows", "pantalla azul", "bsod", "pantallazo azul", "bloqueado", "actualizacion", "actualizar", "update", "parche"],
+      "pasos": [
+        "Anota el codigo de error mostrado en pantalla, si aparece alguno.",
+        "Reinicia el equipo antes de intentar cualquier otra accion.",
+        "Guarda tu trabajo y conecta el equipo a la corriente antes de instalar actualizaciones.",
+        "No instales hardware o drivers adicionales hasta que el soporte revise el caso."
+      ]
+    },
+    {
+      "id": "kb_impresoras_001",
+      "categoria": "Impresoras",
+      "palabras_clave": ["impresora", "imprime", "impresion", "imprimir"],
+      "pasos": [
+        "Verifica que la impresora este encendida y conectada.",
+        "Comprueba que tenga papel y no muestre un error fisico.",
+        "Cancela solo los trabajos propios que permanezcan en cola.",
+        "Si el error continua, informa el nombre de la impresora al soporte."
+      ]
+    },
+    {
+      "id": "kb_aplicaciones_001",
+      "categoria": "Aplicaciones",
+      "palabras_clave": ["instalar", "instalacion", "programa", "software", "aplicacion"],
+      "pasos": [
+        "Verifica que tengas permisos de instalacion en el equipo.",
+        "Si no los tienes, solicita la instalacion al soporte indicando el nombre y version exactos.",
+        "No descargues instaladores de fuentes no oficiales."
+      ]
+    },
+    {
+      "id": "kb_correo_corporativo_001",
+      "categoria": "Correo corporativo",
+      "palabras_clave": ["correo", "email", "outlook", "bandeja"],
+      "pasos": [
+        "Verifica tu conexion a internet.",
+        "Confirma que el servicio de correo no este caido revisando el estado institucional.",
+        "Revisa la carpeta de spam.",
+        "Si no puedes iniciar sesion, reporta el mensaje de error exacto al soporte."
+      ]
+    },
+    {
+      "id": "kb_contrasena_001",
+      "categoria": "Contrasena",
+      "palabras_clave": ["contrasena", "contraseña", "password", "clave", "olvide"],
+      "pasos": [
+        "Usa la opcion 'Olvide mi contraseña' en el portal institucional.",
+        "Revisa la carpeta de spam si esperas un correo de recuperacion.",
+        "Si no llega, solicita el restablecimiento manual al soporte; el agente no puede cambiarla directamente."
+      ]
+    },
+    {
+      "id": "kb_vpn_001",
+      "categoria": "VPN",
+      "palabras_clave": ["vpn", "acceso remoto", "conexion remota"],
+      "pasos": [
+        "Confirma tu usuario y contraseña de la VPN.",
+        "Revisa que el cliente VPN este actualizado.",
+        "Verifica que no haya otra sesion activa desde otro dispositivo."
+      ]
+    },
+    {
+      "id": "kb_perifericos_001",
+      "categoria": "Perifericos",
+      "palabras_clave": ["teclado", "mouse", "raton", "periferico", "audio", "sonido", "microfono"],
+      "pasos": [
+        "Prueba el periferico en otro puerto USB o con otro cable.",
+        "Reinicia el equipo.",
+        "Si es inalambrico, revisa que las baterias no esten agotadas."
+      ]
+    },
+    {
+      "id": "kb_seguridad_001",
+      "categoria": "Seguridad",
+      "palabras_clave": ["virus", "antivirus", "malware", "sospechoso"],
+      "pasos": [
+        "Desconecta el equipo de la red inmediatamente.",
+        "No ingreses contraseñas ni abras archivos adicionales.",
+        "Reporta el caso de inmediato al soporte para un analisis de seguridad."
+      ]
+    }
+  ]
+}
