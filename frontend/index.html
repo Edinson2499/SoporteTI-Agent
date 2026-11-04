@@ -1,0 +1,226 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Agente inteligente de soporte TI">
+    <title>SoporteTI-Agent | Asistente de soporte</title>
+
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+
+<body>
+
+    <div class="app-container">
+
+        <!-- MENU LATERAL -->
+        <aside class="sidebar">
+
+            <div class="brand">
+                <div class="brand-icon">S</div>
+                <div>
+                    <h2>SoporteTI-Agent</h2>
+                    <span>Asistente inteligente</span>
+                </div>
+            </div>
+
+            <button class="new-chat" id="newChat">
+                <span>＋</span> Nuevo chat
+            </button>
+
+            <nav class="navigation">
+
+                <p class="nav-title">MENÚ PRINCIPAL</p>
+
+                <a href="#" class="nav-link active" data-section="chat">
+                    <span>💬</span> Chat de soporte
+                </a>
+
+                <a href="#" class="nav-link" data-section="history">
+                    <span>🕘</span> Historial
+                </a>
+
+                <a href="#" class="nav-link" data-section="approval">
+                    <span>🛡️</span> Aprobaciones
+                    <span class="nav-badge" id="approvalCount">0</span>
+                </a>
+
+                <p class="nav-title">AYUDA RÁPIDA</p>
+
+                <button class="quick-option" data-question="No tengo conexión a internet">
+                    🌐 Problemas de internet
+                </button>
+
+                <button class="quick-option" data-question="Mi computador está lento">
+                    💻 Equipo lento
+                </button>
+
+                <button class="quick-option" data-question="No puedo iniciar sesión">
+                    🔐 Problemas de acceso
+                </button>
+
+                <button class="quick-option" data-question="Tengo problemas con mi impresora">
+                    🖨️ Problemas de impresión
+                </button>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="status-dot"></div>
+                <span>Servicio de soporte</span>
+                <strong>Disponible</strong>
+            </div>
+
+        </aside>
+
+
+        <!-- CONTENIDO PRINCIPAL -->
+        <main class="main-content">
+
+            <header class="topbar">
+
+                <div>
+                    <h3 id="pageTitle">Chat de soporte</h3>
+                    <p>Centro de asistencia tecnológica</p>
+                </div>
+
+                <div class="user-profile">
+                    <div class="user-avatar">U</div>
+                    <div>
+                        <strong>Usuario</strong>
+                        <span>Solicitante</span>
+                    </div>
+                </div>
+
+            </header>
+
+
+            <!-- SECCION CHAT -->
+            <section class="chat-section" id="chatSection">
+
+                <div class="welcome-message">
+
+                    <div class="welcome-icon">🤖</div>
+
+                    <h1>¡Hola! ¿En qué podemos ayudarte?</h1>
+
+                    <p>
+                        Soy SoporteTI-Agent, tu asistente inteligente
+                        de soporte técnico. Cuéntame qué problema
+                        estás experimentando y buscaré una solución.
+                    </p>
+
+                </div>
+
+
+                <!-- ACCESOS RAPIDOS -->
+                <div class="quick-cards">
+
+                    <button class="quick-card" data-question="No tengo conexión a internet">
+                        <span>🌐</span>
+                        <strong>Conexión a internet</strong>
+                        <small>Problemas de conectividad</small>
+                    </button>
+
+                    <button class="quick-card" data-question="Mi computador está lento">
+                        <span>💻</span>
+                        <strong>Equipo lento</strong>
+                        <small>Rendimiento del computador</small>
+                    </button>
+
+                    <button class="quick-card" data-question="No puedo iniciar sesión">
+                        <span>🔐</span>
+                        <strong>Acceso al sistema</strong>
+                        <small>Problemas de inicio de sesión</small>
+                    </button>
+
+                    <button class="quick-card" data-question="Tengo problemas con mi impresora">
+                        <span>🖨️</span>
+                        <strong>Impresora</strong>
+                        <small>Problemas de impresión</small>
+                    </button>
+
+                </div>
+
+
+                <!-- CONVERSACION -->
+                <div class="conversation" id="conversation"></div>
+
+
+                <!-- RESPUESTAS QUE REQUIEREN APROBACION -->
+                <div id="approvalNotice" class="approval-notice hidden">
+                    <strong>⚠️ Revisión humana requerida</strong>
+                    <p>
+                        Este caso necesita aprobación antes de continuar.
+                    </p>
+                </div>
+
+
+                <!-- CAMPO DE MENSAJE -->
+                <form class="chat-input-container" id="chatForm">
+
+                    <textarea
+                        id="messageInput"
+                        placeholder="Describe tu problema técnico..."
+                        rows="1"
+                        required
+                    ></textarea>
+
+                    <button type="submit" id="sendButton">
+                        Enviar ➤
+                    </button>
+
+                </form>
+
+                <p class="input-disclaimer">
+                    El agente proporciona recomendaciones seguras.
+                    Las acciones administrativas requieren autorización.
+                </p>
+
+            </section>
+
+
+            <!-- SECCION HISTORIAL -->
+            <section class="content-section hidden" id="historySection">
+
+                <h1>Historial de conversaciones</h1>
+
+                <p>Consulta tus conversaciones anteriores.</p>
+
+                <div id="historyList" class="history-list">
+                    <div class="empty-state">
+                        <span>🕘</span>
+                        <h3>No hay conversaciones todavía</h3>
+                        <p>Cuando utilices el agente, aparecerán aquí.</p>
+                    </div>
+                </div>
+
+            </section>
+
+
+            <!-- SECCION APROBACIONES -->
+            <section class="content-section hidden" id="approvalSection">
+
+                <h1>Casos pendientes de aprobación</h1>
+
+                <p>Solicitudes que requieren revisión humana.</p>
+
+                <div id="approvalList" class="approval-list">
+                    <div class="empty-state">
+                        <span>🛡️</span>
+                        <h3>No tienes casos pendientes</h3>
+                        <p>Los casos que necesiten autorización aparecerán aquí.</p>
+                    </div>
+                </div>
+
+            </section>
+
+        </main>
+
+    </div>
+
+    <script src="js/app.js"></script>
+
+</body>
+</html>
